@@ -1,7 +1,12 @@
 let BN = web3.utils.BN;
 let SupplyChain = artifacts.require("SupplyChain");
 let { catchRevert } = require("./exceptionsHelpers.js");
-const { items: ItemStruct, isDefined, isPayable, isType } = require("./ast-helper");
+const {
+  items: ItemStruct,
+  isDefined,
+  isPayable,
+  isType,
+} = require("./ast-helper");
 
 contract("SupplyChain", function (accounts) {
   const [_owner, alice, bob] = accounts;
@@ -19,51 +24,56 @@ contract("SupplyChain", function (accounts) {
 
   describe("Variables", () => {
     it("should have an owner", async () => {
-      assert.equal(typeof instance.owner, 'function', "the contract has no owner");
+      assert.equal(
+        typeof instance.owner,
+        "function",
+        "the contract has no owner"
+      );
     });
 
     it("should have an skuCount", async () => {
-      assert.equal(typeof instance.skuCount, 'function', "the contract has no skuCount");
+      assert.equal(
+        typeof instance.skuCount,
+        "function",
+        "the contract has no skuCount"
+      );
     });
 
     describe("enum State", () => {
       let enumState;
       before(() => {
         enumState = SupplyChain.enums.State;
-        assert(
-          enumState,
-          "The contract should define an Enum called State"
-        );
+        assert(enumState, "The contract should define an Enum called State");
       });
 
       it("should define `ForSale`", () => {
         assert(
-          enumState.hasOwnProperty('ForSale'),
+          enumState.hasOwnProperty("ForSale"),
           "The enum does not have a `ForSale` value"
         );
       });
 
       it("should define `Sold`", () => {
         assert(
-          enumState.hasOwnProperty('Sold'),
+          enumState.hasOwnProperty("Sold"),
           "The enum does not have a `Sold` value"
         );
       });
 
       it("should define `Shipped`", () => {
         assert(
-          enumState.hasOwnProperty('Shipped'),
+          enumState.hasOwnProperty("Shipped"),
           "The enum does not have a `Shipped` value"
         );
       });
 
       it("should define `Received`", () => {
         assert(
-          enumState.hasOwnProperty('Received'),
+          enumState.hasOwnProperty("Received"),
           "The enum does not have a `Received` value"
         );
       });
-    })
+    });
 
     describe("Item struct", () => {
       let subjectStruct;
@@ -71,83 +81,80 @@ contract("SupplyChain", function (accounts) {
       before(() => {
         subjectStruct = ItemStruct(SupplyChain);
         assert(
-          subjectStruct !== null, 
+          subjectStruct !== null,
           "The contract should define an `Item Struct`"
         );
       });
 
       it("should have a `name`", () => {
         assert(
-          isDefined(subjectStruct)("name"), 
+          isDefined(subjectStruct)("name"),
           "Struct Item should have a `name` member"
         );
         assert(
-          isType(subjectStruct)("name")("string"), 
+          isType(subjectStruct)("name")("string"),
           "`name` should be of type `string`"
         );
       });
 
       it("should have a `sku`", () => {
         assert(
-          isDefined(subjectStruct)("sku"), 
+          isDefined(subjectStruct)("sku"),
           "Struct Item should have a `sku` member"
         );
         assert(
-          isType(subjectStruct)("sku")("uint"), 
+          isType(subjectStruct)("sku")("uint"),
           "`sku` should be of type `uint`"
         );
       });
 
       it("should have a `price`", () => {
         assert(
-          isDefined(subjectStruct)("price"), 
+          isDefined(subjectStruct)("price"),
           "Struct Item should have a `price` member"
         );
         assert(
-          isType(subjectStruct)("price")("uint"), 
+          isType(subjectStruct)("price")("uint"),
           "`price` should be of type `uint`"
         );
       });
 
       it("should have a `state`", () => {
         assert(
-          isDefined(subjectStruct)("state"), 
+          isDefined(subjectStruct)("state"),
           "Struct Item should have a `state` member"
         );
         assert(
-          isType(subjectStruct)("state")("State"), 
+          isType(subjectStruct)("state")("State"),
           "`state` should be of type `State`"
         );
       });
 
       it("should have a `seller`", () => {
         assert(
-          isDefined(subjectStruct)("seller"), 
+          isDefined(subjectStruct)("seller"),
           "Struct Item should have a `seller` member"
         );
         assert(
-          isType(subjectStruct)("seller")("address"), 
+          isType(subjectStruct)("seller")("address"),
           "`seller` should be of type `address`"
         );
         assert(
-          isPayable(subjectStruct)("seller"), 
+          isPayable(subjectStruct)("seller"),
           "`seller` should be payable"
         );
       });
 
       it("should have a `buyer`", () => {
         assert(
-          isDefined(subjectStruct)("buyer"), 
+          isDefined(subjectStruct)("buyer"),
           "Struct Item should have a `buyer` member"
         );
         assert(
-          isType(subjectStruct)("buyer")("address"), 
+          isType(subjectStruct)("buyer")("address"),
           "`buyer` should be of type `address`"
         );
-        assert(
-          isPayable(subjectStruct)("buyer"), 
-          "`buyer` should be payable"
-        );
+        assert(isPayable(subjectStruct)("buyer"), "`buyer` should be payable");
       });
     });
   });
@@ -161,27 +168,27 @@ contract("SupplyChain", function (accounts) {
       assert.equal(
         result[0],
         name,
-        "the name of the last added item does not match the expected value",
+        "the name of the last added item does not match the expected value"
       );
       assert.equal(
         result[2].toString(10),
         price,
-        "the price of the last added item does not match the expected value",
+        "the price of the last added item does not match the expected value"
       );
       assert.equal(
         result[3].toString(10),
         SupplyChain.State.ForSale,
-        'the state of the item should be "For Sale"',
+        'the state of the item should be "For Sale"'
       );
       assert.equal(
         result[4],
         alice,
-        "the address adding the item should be listed as the seller",
+        "the address adding the item should be listed as the seller"
       );
       assert.equal(
         result[5],
         emptyAddress,
-        "the buyer address should be set to 0 when an item is added",
+        "the buyer address should be set to 0 when an item is added"
       );
     });
 
@@ -196,7 +203,7 @@ contract("SupplyChain", function (accounts) {
       assert.equal(
         eventEmitted,
         true,
-        "adding an item should emit a For Sale event",
+        "adding an item should emit a For Sale event"
       );
     });
 
@@ -215,25 +222,25 @@ contract("SupplyChain", function (accounts) {
       assert.equal(
         result[3].toString(10),
         SupplyChain.State.Sold,
-        'the state of the item should be "Sold"',
+        'the state of the item should be "Sold"'
       );
 
       assert.equal(
         result[5],
         bob,
-        "the buyer address should be set bob when he purchases an item",
+        "the buyer address should be set bob when he purchases an item"
       );
 
       assert.equal(
         new BN(aliceBalanceAfter).toString(),
         new BN(aliceBalanceBefore).add(new BN(price)).toString(),
-        "alice's balance should be increased by the price of the item",
+        "alice's balance should be increased by the price of the item"
       );
 
       assert.isBelow(
         Number(bobBalanceAfter),
         Number(new BN(bobBalanceBefore).sub(new BN(price))),
-        "bob's balance should be reduced by more than the price of the item (including gas costs)",
+        "bob's balance should be reduced by more than the price of the item (including gas costs)"
       );
     });
 
@@ -252,7 +259,11 @@ contract("SupplyChain", function (accounts) {
         eventEmitted = true;
       }
 
-      assert.equal(eventEmitted, true, "adding an item should emit a Sold event");
+      assert.equal(
+        eventEmitted,
+        true,
+        "adding an item should emit a Sold event"
+      );
     });
 
     it("should revert when someone that is not the seller tries to call shipItem()", async () => {
@@ -271,7 +282,7 @@ contract("SupplyChain", function (accounts) {
       assert.equal(
         result[3].toString(10),
         SupplyChain.State.Shipped,
-        'the state of the item should be "Shipped"',
+        'the state of the item should be "Shipped"'
       );
     });
 
@@ -289,7 +300,7 @@ contract("SupplyChain", function (accounts) {
       assert.equal(
         eventEmitted,
         true,
-        "adding an item should emit a Shipped event",
+        "adding an item should emit a Shipped event"
       );
     });
 
@@ -304,7 +315,7 @@ contract("SupplyChain", function (accounts) {
       assert.equal(
         result[3].toString(10),
         SupplyChain.State.Received,
-        'the state of the item should be "Received"',
+        'the state of the item should be "Received"'
       );
     });
 
@@ -331,10 +342,8 @@ contract("SupplyChain", function (accounts) {
       assert.equal(
         eventEmitted,
         true,
-        "adding an item should emit a Shipped event",
+        "adding an item should emit a Shipped event"
       );
     });
-
   });
-
 });

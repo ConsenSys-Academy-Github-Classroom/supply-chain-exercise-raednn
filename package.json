@@ -1,0 +1,14 @@
+{
+  "name": "supply-chain-exercise-raednn",
+  "version": "1.0.0",
+  "repository": "https://github.com/ConsenSys-Academy-Github-Classroom/supply-chain-exercise-raednn",
+  "author": "raednn <raednn@protonmail.com>",
+  "license": "MIT",
+	"scripts": {
+		"compile": "truffle compile",
+		"test": "truffle test"
+	},
+  "dependencies": {
+    "truffle": "^5.4.10"
+  }
+}
